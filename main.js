@@ -1,5 +1,6 @@
 
-import kontra from "./kontra/kontra";
+import kontra, { SpriteClass } from "./kontra/kontra";
+
 
 class Player {
     constructor(x,y) {
@@ -60,8 +61,23 @@ function other_main() {
         }
     })
 
+    let player2 = kontra.Sprite({
+        x : 100, y : 80,
+        image : 
+        kontra.imageAssets["whitedot_sprite_test1.png"],
+        update() {
+            this.advance();
+        },
+        render : function() {
+            this.draw();
+        },
+        applyForce(scalarY) {
+            
+        }
+    });
 
-    let player = new Player(100,80);
+
+    //let player = new Player(100,80);
 
     kontra.onPointer("down", function(e,o) {
         
@@ -73,11 +89,15 @@ function other_main() {
     let loop = kontra.GameLoop({
         update : function() {
             bg1.update();
-
+            player2.update();
+            
             if (kontra.keyPressed("space")) {
                 //player.spr.y -= 3;
-                player.applyForce(-3);
+                player2.applyForce(-3);
             }
+
+/*
+            
             player.update();
 
             if (player.spr.x > canvas.width) {
@@ -87,11 +107,12 @@ function other_main() {
             if (player.spr.y > canvas.height) {
                 player.spr.y = -10;
             }
-
+            */
         },
         render : function() {
             bg1.render();
-            player.render();
+            //player.render();
+            player2.render();
         }
     });
     loop.start();
