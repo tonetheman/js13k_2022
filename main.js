@@ -10,13 +10,33 @@ class Player {
 
         this.spr = kontra.Sprite({
             x:x,y:y,
-            image : kontra.imageAssets["whitedot_sprite_test1.png"],
-            width : 20, height : 20
+            image : 
+                kontra.imageAssets["whitedot_sprite_test1.png"]
         })
     }
+    applyForce(scalarY) {
+        // just apply to y
+        this.accel.add(kontra.Vector(0,scalarY));
+    }
     update() {
-        this.spr.y += 1.5;
-        this.spr.update();
+        // gravity
+        //this.spr.y += 1.5;
+        this.applyForce(1.5);
+
+        // add accel to velocity
+        this.velocity.add(this.accel);
+        // actually move here
+        this.location.add(this.velocity);
+
+        // match up the sprite now
+        this.spr.x = this.location.x;
+        this.spr.y = this.location.y;
+
+        //? do i need to call this?
+        //this.spr.update();
+
+        // reset the accel vector
+        this.accel.x = 0; this.accel.y = 0;
     }
     render() {
         this.spr.render();
@@ -27,19 +47,19 @@ function other_main() {
     let canvas = kontra.getCanvas();
 
     let bg1 = kontra.Sprite({
-        x :0, y : 0,
-        height : 600,
-        width : 64,
+        dx : 1,
         image : kontra.imageAssets["background.png"],
-        dx : 1
-    });
-    let bg2 = kontra.Sprite({
-        x :-800, y : 0,
-        height : 600,
-        width : 64,
-        image : kontra.imageAssets["background.png"],
-        dx : 1
+        update : function() {
+            this.advance(); // kontra stuff
+            if (this.x>canvas.width) {
+                this.x = 0;
+            }
+        },
+        render : function() {
+            this.draw();
+        }
     })
+
 
     let player = new Player(100,80);
 
@@ -53,13 +73,10 @@ function other_main() {
     let loop = kontra.GameLoop({
         update : function() {
             bg1.update();
-            bg2.update();
-
-            if (bg1.x > 1600) bg1.x = 0;
-            if (bg2.x > 800) bg2.x = -800;
 
             if (kontra.keyPressed("space")) {
-                player.spr.y -= 3;
+                //player.spr.y -= 3;
+                player.applyForce(-3);
             }
             player.update();
 
@@ -74,8 +91,6 @@ function other_main() {
         },
         render : function() {
             bg1.render();
-            bg2.render();
-
             player.render();
         }
     });
