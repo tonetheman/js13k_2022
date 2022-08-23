@@ -1,6 +1,27 @@
 
 import kontra from "./kontra/kontra";
 
+class Player {
+    constructor(x,y) {
+        // this is separate from the sprite
+        this.location = kontra.Vector(x,y);
+        this.velocity = kontra.Vector(0,0);
+        this.accel = kontra.Vector(0,0);
+
+        this.spr = kontra.Sprite({
+            x:x,y:y,
+            image : kontra.imageAssets["whitedot_sprite_test1.png"],
+            width : 20, height : 20
+        })
+    }
+    update() {
+        this.spr.y += 1.5;
+        this.spr.update();
+    }
+    render() {
+        this.spr.render();
+    }
+}
 
 function other_main() {
     let canvas = kontra.getCanvas();
@@ -20,16 +41,10 @@ function other_main() {
         dx : 1
     })
 
-    let sprite = kontra.Sprite({
-        x:100, y:80,
-        //color: "red",
-        image : kontra.imageAssets["whitedot_sprite_test1.png"],
-        width : 20, height : 20,
-        dy : 1
-    });
+    let player = new Player(100,80);
 
     kontra.onPointer("down", function(e,o) {
-        //sprite.y -= 2;
+        
     });
     kontra.onPointer("up", function(e,o){
 
@@ -44,16 +59,16 @@ function other_main() {
             if (bg2.x > 800) bg2.x = -800;
 
             if (kontra.keyPressed("space")) {
-                sprite.y -= 3;
+                player.spr.y -= 3;
             }
-            sprite.update();
+            player.update();
 
-            if (sprite.x > canvas.width) {
-                sprite.x = 0;
+            if (player.spr.x > canvas.width) {
+                player.spr.x = 0;
             }
 
-            if (sprite.y > canvas.height) {
-                sprite.y = -10;
+            if (player.spr.y > canvas.height) {
+                player.spr.y = -10;
             }
 
         },
@@ -61,7 +76,7 @@ function other_main() {
             bg1.render();
             bg2.render();
 
-            sprite.render();
+            player.render();
         }
     });
     loop.start();
@@ -76,7 +91,8 @@ function main() {
     kontra.initPointer();
     kontra.initKeys();
 
-    kontra.load("whitedot_sprite_test1.png",
+    kontra.load(
+        "whitedot_sprite_test1.png",
         "background.png")
     .then(function(){
         other_main();
