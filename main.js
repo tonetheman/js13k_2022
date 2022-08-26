@@ -5,7 +5,9 @@ import {
     GameLoop,
     initInput,
     Sprite,
-    randInt
+    randInt,
+    onInput,
+    keyPressed
 } from "./kontra/kontra.mjs";
 
 
@@ -33,6 +35,10 @@ function main() {
 
     let { canvas, context } = init();
     initInput();
+    
+
+    let spaceDown = false;
+
     let player = new Player({x : canvas.width/2, 
         y : canvas.height/2});
 
@@ -59,13 +65,14 @@ function main() {
         let tmp = Sprite({
             x : randInt(0,canvas.width),
             y : randInt(32, canvas.height-32),
-            dx : -0.5,
+            dx : -0.1 * randInt(1,9),
             height : randInt(0,canvas.height/2),
             width : 32 + randInt(0,32),
             color : "blue"     
         });
         pBg[i] = tmp;
     }
+
 
     function gameRender() {
     
@@ -79,7 +86,7 @@ function main() {
         player.render();
     
     }
-    function gameUpdate() {
+    function gameUpdate(dt) {
         
         if (bg1.x<-canvas.width) bg1.x = canvas.width;
         if (bg2.x<-canvas.width) bg2.x = canvas.width;
@@ -96,14 +103,34 @@ function main() {
             pBg[i].update();
         }
 
+        /*
         if (player.y - player.radius > canvas.height) {
             player.dy *= -1;
         }
         if (player.y-player.radius < 0) {
             player.dy *= -1;
         }
+        */
 
-        player.update();
+       if (keyPressed("space")) {
+            //player.dy = -1;
+            player.ddy -= -1*dt;
+       } else {
+            // gravity
+            player.ddy += 1*dt;
+       }
+
+       if (player.ddy>1) {
+            player.ddy = 1;
+       }
+       if (player.dy>1) {
+            player.dy = 2;
+       }
+       if (player.y>canvas.height) {
+        player.y = 0;
+       }
+
+       player.update();
     }
     
 
