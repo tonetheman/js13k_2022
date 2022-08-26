@@ -7,7 +7,10 @@ import {
     Sprite,
     randInt,
     onInput,
-    keyPressed
+    keyPressed,
+    Vector,
+    initPointer,
+    onPointer
 } from "./kontra/kontra.mjs";
 
 
@@ -30,18 +33,19 @@ export class Player extends SpriteClass {
     }
 }
 
-
 function main() {
 
     let { canvas, context } = init();
-    initInput();
     
+    initInput();
 
+    initPointer();
+    
     let spaceDown = false;
 
     let player = new Player({x : canvas.width/2, 
         y : canvas.height/2});
-
+        
     // bg floor parts
     let bg1 = Sprite({
         x : 0, y : canvas.height-32,
@@ -65,7 +69,7 @@ function main() {
         let tmp = Sprite({
             x : randInt(0,canvas.width),
             y : randInt(32, canvas.height-32),
-            dx : -0.1 * randInt(1,9),
+            dx : -0.5 * randInt(1,9),
             height : randInt(0,canvas.height/2),
             width : 32 + randInt(0,32),
             color : "blue"     
@@ -103,31 +107,25 @@ function main() {
             pBg[i].update();
         }
 
-        /*
-        if (player.y - player.radius > canvas.height) {
-            player.dy *= -1;
-        }
-        if (player.y-player.radius < 0) {
-            player.dy *= -1;
-        }
-        */
-
        if (keyPressed("space")) {
-            //player.dy = -1;
-            player.ddy -= -1*dt;
-       } else {
+            //player.velocity = player.velocity.add(Vector(0,-10*dt))
+            player.velocity.y += -11*dt;
+        } else {
             // gravity
-            player.ddy += 1*dt;
+            //player.velocity = player.velocity.add(Vector(0,9.8*dt))
+            player.velocity.y += 9.8*dt;
+        }
+
+        // bottom handling
+       if (player.y>canvas.height) {
+        player.y = canvas.height;
+        player.velocity.y = 0;
        }
 
-       if (player.ddy>1) {
-            player.ddy = 1;
-       }
-       if (player.dy>1) {
-            player.dy = 2;
-       }
-       if (player.y>canvas.height) {
+       // top handling something is wrong here?
+       if (player.y<0) {
         player.y = 0;
+        player.velocity.y = 0;
        }
 
        player.update();
