@@ -10,10 +10,17 @@ import {
     keyPressed,
     Vector,
     initPointer,
-    onPointer
+    onPointer,
+    collides,
+    emit,
+    on
 } from "./kontra/kontra.mjs";
 
 
+let ROCKET_COUNT = 3;
+
+// custom player instance
+// might not need this in the final version?
 export class Player extends SpriteClass {
     constructor(props) {
         super({
@@ -38,16 +45,19 @@ export class Player extends SpriteClass {
     }
 }
 
+
+// called when window is loaded
 function main() {
 
+    // kontra stuff
     let { canvas, context } = init();
-    
     initInput();
-
     initPointer();
     
+    // are we moving up? needed for animation
     let spaceDown = false;
 
+    // create the one player instance
     let player = new Player({
         x : canvas.width/6, 
         y : canvas.height/2});
@@ -69,6 +79,7 @@ function main() {
         dx : -1
     });
 
+    // background boxes
     let pBg = [];
     for (let i=0;i<10;i++) {
         if (randInt(1,10)<5) {
@@ -96,27 +107,64 @@ function main() {
         }
     }
 
+    // rockets that can kill
+    // the player
+    let rockets = [];
+    for(let i=0;i<ROCKET_COUNT;i++) {
+        rockets.push(Sprite({
+            x : canvas.width+32,
+            y : randInt(32,canvas.height-32),
+            dx : -10,
+            height : 16,
+            width : 16,
+            color : 'yellow'
+        }));
+    };
 
+    // called from an emi of SIG_EOG
+    function handle_game_over() {
+
+    }
+
+    // handle the end of game message
+    // player was kilt
+    on("SIG_EOG", handle_game_over);
+
+    // the one and only render function
+    // kontra calls this in the GameLoop
     function gameRender() {
     
+        // render the background stuff
         for(let i=0;i<10;i++) {
             pBg[i].render();
         }
 
+        // render the floor (forwgroun)
         bg1.render();
         bg2.render();
 
+        // render the player
         player.render();
+
+        // render the rockets
+        for(let i=0;i<ROCKET_COUNT;i++) {
+            rockets[i].render();
+        }
     
     }
+
+    // game update function called by kontra
     function gameUpdate(dt) {
         
+        // move background floor along
         if (bg1.x<-canvas.width) bg1.x = canvas.width;
         if (bg2.x<-canvas.width) bg2.x = canvas.width;
 
+        // kontra update calls
         bg1.update();
         bg2.update();
 
+        // background sprites for now
         for (let i=0;i<10;i++) {
 
             if (pBg[i].x+pBg[i].width<0) {
@@ -126,7 +174,8 @@ function main() {
             pBg[i].update();
         }
 
-       if (keyPressed("space")) {
+        // game logic for rocket death
+        if (keyPressed("space")) {
             player.rocket = true;
             //player.velocity = player.velocity.add(Vector(0,-10*dt))
             player.velocity.y += -11*dt;
@@ -149,14 +198,38 @@ function main() {
         player.velocity.y = 0;
        }
 
+       // update the player
        player.update();
+
+       // update rockets
+       for(let i=0;i<ROCKET_COUNT;i++) {
+            
+            // check for collision
+            if (collides(player,rockets[i])) {
+                console.log("COLLIDE");
+
+                emit("SIG_EOG");
+            }
+
+            // update the rocket position
+            rockets[i].update();
+
+            // did the rocket go off the screen?
+            if (rockets[i].x<0) {
+                // reset the rocket
+                rockets[i].y = randInt(32,canvas.height-32);
+                rockets[i].x = canvas.width+(randInt(1,3)*16);
+            }
+        }
     }
     
-
+    // kontra game loop
     let loop = GameLoop({
         update : gameUpdate,
         render : gameRender
     });
+
+    // start the mess
     loop.start();
 }
 
