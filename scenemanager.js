@@ -11,7 +11,7 @@ export class SceneManager {
     set(name) {
         this.cs = this.data[name];
     }
-    update(dt) {
+    update() {
         if (this.cs) this.cs.update(this._dt);
     }
     render() {

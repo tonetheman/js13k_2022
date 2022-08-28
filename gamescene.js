@@ -15,7 +15,6 @@ let ROCKET_COUNT = 3;
 
 export class GameScene {
     constructor(canvas,context) {
-        this._dt = 0.0;
         this.canvas = canvas;
         this.context = context;
 
@@ -95,7 +94,7 @@ export class GameScene {
         console.log("GAME OVER!");
     }
 
-    update() {
+    update(_dt) {
 
         // move background floor along
         if (this.bg1.x<-this.canvas.width) 
@@ -123,12 +122,12 @@ export class GameScene {
         if (keyPressed("space")) {
             this.player.rocket = true;
             //player.velocity = player.velocity.add(Vector(0,-10*dt))
-            this.player.velocity.y += -11*this._dt;
+            this.player.velocity.y += -11*_dt;
         } else {
             this.player.rocket = false;
             // gravity
             //player.velocity = player.velocity.add(Vector(0,9.8*dt))
-            this.player.velocity.y += 9.8*this._dt;
+            this.player.velocity.y += 9.8*_dt;
         }
 
         // bottom handling
