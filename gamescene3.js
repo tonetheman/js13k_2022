@@ -23,7 +23,7 @@ export class GameScene3 {
             color : "#6a8d73",
             width : this.canvas.width,
             height : 32,
-            dx : -1
+            dx : -100
         });
         this.bg2 = Sprite({
             x : this.canvas.width, 
@@ -31,7 +31,7 @@ export class GameScene3 {
             color : "#f4fdd9",
             width : this.canvas.width,
             height : 32,
-            dx : -1
+            dx : -100
         });
     }
 
@@ -48,17 +48,17 @@ export class GameScene3 {
     
         // if you pass dt to these the bottom will move
         // super slow
-        this.bg1.update();
-        this.bg2.update();
+        this.bg1.update(dt);
+        this.bg2.update(dt);
 
         // game logic for rocket death
         if (keyPressed("space")) {
             //player.velocity = player.velocity.add(Vector(0,-10*dt))
-            this.player.velocity.y += -100*dt;
+            this.player.velocity.y += -500*dt;
         } else {
             // gravity
             //player.velocity = player.velocity.add(Vector(0,9.8*dt))
-            this.player.velocity.y += 100*dt;
+            this.player.velocity.y += 400*dt;
         }
 
 
