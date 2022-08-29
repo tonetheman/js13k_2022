@@ -63,7 +63,8 @@ function gamemain() {
 on("main", gamemain);
 
 function main() {
-    load("death_v1.png").then(()=> {
+    load("death_v1.png",
+        "long_bottom.png").then(()=> {
         emit("main");
     });
 }

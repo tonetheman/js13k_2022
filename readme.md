@@ -4,6 +4,7 @@
 
 ## DEATH ON A JET PACK
 
+### gamescene3 is the soccer idea?
 
 no clue what I am doing...
 
