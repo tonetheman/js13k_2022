@@ -5,6 +5,14 @@ import {
     keyPressed
 } from "./kontra/kontra.mjs";
 
+// bad guy states
+const WAITING = 1; // waiting off screen
+const COMING = 2; // moving to onscreen
+const INPLACE_IDLE = 3; // hanging out onscreen
+const FIRING = 4; // firing on screen
+// really goes back to inplace_idle
+const GOING = 5; // leaving the screen
+
 
 // this is a test of the soccer idea
 // need a collider sprite behind the
@@ -53,6 +61,17 @@ export class GameScene3 {
             dx : -100
         });
 
+        // this is the bad guy list
+        this.bads = [];
+        this.bads.push(Sprite({
+            x : this.canvas.width+32, 
+            y : 32, // offscreen
+            color : '#0f0',
+            anchor : { x : 0.5, y : 0.5 },
+            width : 32, height : 32,
+            bstate : WAITING
+        }));
+
         console.log("gamescene3 loaded");
     }
 
@@ -96,7 +115,20 @@ export class GameScene3 {
         this.player.velocity.y = 0;
        }
 
-        this.player.update(dt); 
+        this.player.update(dt);
+
+        // does a bad guy need to come up and shoot?
+        // state machine:
+        // waiting to come out - waiting off screen
+        // coming out - moving into a position on screen
+        // firing - shoot (creates new sprite)
+        // waiting - watching the shot?
+        // hiding - moving off screen
+        // waiting to come out
+        //
+        for(let i=0;i<this.bads.length;i++) {
+            this.bads[i].update(dt);
+        }
     }
 
     render() {
@@ -104,5 +136,8 @@ export class GameScene3 {
         this.bg2.render();
         this.goal.render();
         this.player.render();
+        for (let i=0;i<this.bads.length;i++) {
+            this.bads[i].render();
+        }
     }
 }
