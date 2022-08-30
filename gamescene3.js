@@ -2,7 +2,10 @@
 import {
     Sprite,
     imageAssets,
-    keyPressed
+    keyPressed,
+    on,
+    initPointer,
+    getPointer
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -64,7 +67,7 @@ export class GameScene3 {
         // this is the bad guy list
         this.bads = [];
         this.bads.push(Sprite({
-            x : this.canvas.width+32, 
+            x : this.canvas.width-32, 
             y : 32, // offscreen
             color : '#0f0',
             anchor : { x : 0.5, y : 0.5 },
@@ -72,10 +75,14 @@ export class GameScene3 {
             bstate : WAITING
         }));
 
+        initPointer(); // added to get bads to appear
+
         console.log("gamescene3 loaded");
     }
 
     update(dt) {
+        
+        console.log(getPointer());
         
         // move background floor along
         if (this.bg1.x<-this.canvas.width) {
