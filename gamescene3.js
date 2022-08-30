@@ -36,6 +36,26 @@ class BadFac {
         }));
     }
 
+    // used to move bad to a spot on screen
+    // not exactly correct
+    // think i need to keep up something
+    // for this to be accurate
+    take_step(b,dt) {
+        // can be destroyed in this state
+        let step = dt*lerp(b.y,b.targety,1.1);
+            
+        if (b.targety>b.y) {
+            b.y += step;
+        } else {
+            b.y -= step;
+        }
+        if (b.targetx>b.x) {
+            b.x += step;   
+        } else {
+            b.x -= step;
+        }
+    }
+
     update(dt) {
         // state machine:
         // waiting to come out - waiting off screen
@@ -49,10 +69,8 @@ class BadFac {
             let b = this.bads[i];
 
             if (b.bstate==COMING) {
-                // can be destroyed in this state
-                let step = dt*lerp(b.y,b.targety,1);
-                
-                b.y += step;
+    
+                this.take_step(b,dt);
 
                 if (b.y == b.targety) {
                     // once we make it to the target
@@ -77,6 +95,8 @@ class BadFac {
             this.bads[i].update(dt);
         }
 
+        // no bads are on screen
+        // decide to do something
         if (this.throwing==0) {
             if (Math.random()<0.5) {
                 // start someone throwing
@@ -89,6 +109,8 @@ class BadFac {
                 // might need an X here too
                 this.bads[0].targety = 
                     randInt(0,this.canvas.height);
+                this.bads[0].targetx =
+                    randInt(0,this.canvas.width);
             }
         }
     }
