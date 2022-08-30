@@ -1,4 +1,5 @@
 
+import { createImportSpecifier, isThisTypeNode } from "typescript";
 import {
     Sprite,
     imageAssets,
@@ -6,7 +7,9 @@ import {
     initPointer,
     getPointer,
     randInt,
-    lerp
+    lerp,
+    emit,
+    on
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -38,12 +41,17 @@ class BadFac {
 
     // used to move bad to a spot on screen
     // not exactly correct
-    // think i need to keep up something
+    // think i need to keep up something   
     // for this to be accurate
-    take_step(b,dt) {
+    take_step(b,dt,next_state) {
         // can be destroyed in this state
-        let step = dt*lerp(b.y,b.targety,1.1);
-            
+        let step = dt*lerp(b.y,b.targety,b.lpercent);
+        b.lpercent += 0.02;
+        
+        if (b.lpercent>1.0) {
+            b.bstate = next_state;
+            return;
+        }
         if (b.targety>b.y) {
             b.y += step;
         } else {
@@ -70,16 +78,36 @@ class BadFac {
 
             if (b.bstate==COMING) {
     
-                this.take_step(b,dt);
+                // this will take a step
+                // towards the targetx,y and
+                // once it arrives it will change
+                // state to FIRING
+                this.take_step(b,dt,FIRING);
 
-                if (b.y == b.targety) {
-                    // once we make it to the target
-                    // change state
-                    b.state = FIRING;
-                }
             } else if (b.bstate==FIRING) {
                 // can be destroyed
                 // let a soul/rocket fly
+
+                // choice 1
+                // emit("FIRE");
+                // TODO : how to pass something along?
+                emit("FIRE1", b);
+                b.bstate = WAITING;
+
+                // choice 2
+                // somehow get a pointer back to the scene?
+
+                /*
+                this.rockets.push(Sprite({
+                    x : this.canvas.width+32,
+                    y : randInt(32,this.canvas.height-32),
+                    dx : -10,
+                    height : 16,
+                    width : 16,
+                    color : 'yellow'
+                }));
+                */
+    
             } else if (b.bstate==WAITING) {
                 // can be destroyed
                 // watching for the rocket/soul to hit
@@ -111,6 +139,8 @@ class BadFac {
                     randInt(0,this.canvas.height);
                 this.bads[0].targetx =
                     randInt(0,this.canvas.width);
+                // where are they in the lerp?
+                this.bads[0].lpercent = 0.0;
             }
         }
     }
@@ -169,8 +199,33 @@ export class GameScene3 {
         });
 
         this.bf = new BadFac(canvas,context);
+        
+        // rockets fired by bad
+        this.rockets = [];
+
+        on("FIRE1", (b) =>{
+            this.handle_fire1(b);
+        });
 
         console.log("gamescene3 loaded");
+    }
+
+    // straight across fire
+    handle_fire1(b) {
+        console.log("this bad fired");
+
+        // NOT exactly what I want
+        // need to make a rocket per
+        // bad so it is static
+        this.rockets.push(Sprite({
+            x : b.x,
+            y : b.y,
+            dx : -100,
+            height : 16,
+            width : 16,
+            color : 'yellow'
+        }));
+
     }
 
     update(dt) {
@@ -217,6 +272,13 @@ export class GameScene3 {
         
         this.bf.update(dt);
 
+        for(let i=0;i<this.rockets.length;i++) {
+            this.rockets[i].update(dt);
+
+            if (this.rockets[i].x<0) {
+
+            }
+        }
     }
 
     render() {
@@ -225,5 +287,8 @@ export class GameScene3 {
         this.goal.render();
         this.player.render();
         this.bf.render();
+        for (let i=0;i<this.rockets.length;i++) {
+            this.rockets[i].render();
+        }
     }
 }
