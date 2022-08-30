@@ -37,6 +37,27 @@ class BadFac {
             width : 32, height : 32,
             bstate : WAITING
         }));
+
+        this.rockets = [];
+        this.rockets.push(Sprite({
+            x : -100,
+            y : -100,
+            dx : 0,
+            height : 16,
+            width : 16,
+            color : 'yellow'
+        }));
+
+        on("FIRE1", (b) =>{
+            this.handle_fire1(b);
+        });
+
+    }
+
+    handle_fire1(b) {
+        this.rockets[0].x = b.x;
+        this.rockets[0].y = b.y;
+        this.rockets[0].dx = -10;
     }
 
     // used to move bad to a spot on screen
@@ -112,7 +133,7 @@ class BadFac {
                 // can be destroyed
                 // watching for the rocket/soul to hit
                 
-            } else if (b.bstate==HIDING) {
+            } else if (b.bstate==GOING) {
                 // can be destroyed while onscreen
                 // moving back off screen
                 // once we get back to home
@@ -143,11 +164,28 @@ class BadFac {
                 this.bads[0].lpercent = 0.0;
             }
         }
+
+        this.rockets[0].update();
+        if (this.rockets[0].x<0) {
+
+            // make the rocket not move any more
+            this.rockets[0].x = -100;
+            this.rockets[0].y = -100;
+            this.rockets[0].dx = 0;
+
+            // need to signal the bad 
+            // to move offscreen again
+            this.bads[0].bstate = GOING;
+        }
     }
+
     render() {
         for(let i=0;i<this.bads.length;i++) {
             this.bads[i].render();
         }
+    
+        this.rockets[0].render();
+    
     }
 }
 
@@ -200,32 +238,7 @@ export class GameScene3 {
 
         this.bf = new BadFac(canvas,context);
         
-        // rockets fired by bad
-        this.rockets = [];
-
-        on("FIRE1", (b) =>{
-            this.handle_fire1(b);
-        });
-
         console.log("gamescene3 loaded");
-    }
-
-    // straight across fire
-    handle_fire1(b) {
-        console.log("this bad fired");
-
-        // NOT exactly what I want
-        // need to make a rocket per
-        // bad so it is static
-        this.rockets.push(Sprite({
-            x : b.x,
-            y : b.y,
-            dx : -100,
-            height : 16,
-            width : 16,
-            color : 'yellow'
-        }));
-
     }
 
     update(dt) {
@@ -272,13 +285,6 @@ export class GameScene3 {
         
         this.bf.update(dt);
 
-        for(let i=0;i<this.rockets.length;i++) {
-            this.rockets[i].update(dt);
-
-            if (this.rockets[i].x<0) {
-
-            }
-        }
     }
 
     render() {
@@ -287,8 +293,5 @@ export class GameScene3 {
         this.goal.render();
         this.player.render();
         this.bf.render();
-        for (let i=0;i<this.rockets.length;i++) {
-            this.rockets[i].render();
-        }
     }
 }
