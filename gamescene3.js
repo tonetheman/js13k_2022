@@ -35,17 +35,25 @@ class BadFac {
             color : '#0f0',
             anchor : { x : 0.5, y : 0.5 },
             width : 32, height : 32,
-            bstate : WAITING
+            bstate : WAITING,
+            targetx : 0,
+            targety : 0,
+            lpercent : 0
         }));
 
+        // DEFAULT PLACE FOR A ROCKET
+        // is off to the right of the canvas
+        // we need this to know when it goes
+        // off screen
         this.rockets = [];
         this.rockets.push(Sprite({
-            x : -100,
-            y : -100,
+            x : canvas.width+100, // IMPORTANT SEE NOTE
+            y : 0,
             dx : 0,
             height : 16,
             width : 16,
-            color : 'yellow'
+            color : 'yellow',
+            bstate : WAITING
         }));
 
         on("FIRE1", (b) =>{
@@ -70,6 +78,7 @@ class BadFac {
         b.lpercent += 0.02;
         
         if (b.lpercent>1.0) {
+            console.log("setting b.bstate to next_state",next_state)
             b.bstate = next_state;
             return;
         }
@@ -86,83 +95,59 @@ class BadFac {
     }
 
     update(dt) {
-        // state machine:
-        // waiting to come out - waiting off screen
-        // coming out - moving into a position on screen
-        // firing - shoot (creates new sprite)
-        // waiting - watching the shot?
-        // hiding - moving off screen
-        // waiting to come out
-        //
+
         for(let i=0;i<this.bads.length;i++) {
             let b = this.bads[i];
+            console.log(b.bstate);
 
-            if (b.bstate==COMING) {
+            if (b.bstate==WAITING) {
+                if (Math.random()<0.5) {
+                    this.throwing++; // bump up the throwing count
+                    b.bstate = COMING;
+                    // give them a target
+                    // might need an X here too
+                    b.targety = 
+                        randInt(0,this.canvas.height);
+                    b.targetx =
+                        randInt(0,this.canvas.width);
+                    // where are they in the lerp?
+                    b.lpercent = 0.0;
+                }
+
+                // we are done with this one
+                continue;
+
+            } else if (b.bstate==COMING) {
     
                 // this will take a step
                 // towards the targetx,y and
                 // once it arrives it will change
                 // state to FIRING
                 this.take_step(b,dt,FIRING);
+                continue;
 
             } else if (b.bstate==FIRING) {
                 // can be destroyed
                 // let a soul/rocket fly
 
-                // choice 1
-                // emit("FIRE");
-                // TODO : how to pass something along?
                 emit("FIRE1", b);
-                b.bstate = WAITING;
+                b.bstate = INPLACE_IDLE;
 
-                // choice 2
-                // somehow get a pointer back to the scene?
-
-                /*
-                this.rockets.push(Sprite({
-                    x : this.canvas.width+32,
-                    y : randInt(32,this.canvas.height-32),
-                    dx : -10,
-                    height : 16,
-                    width : 16,
-                    color : 'yellow'
-                }));
-                */
+               continue;
     
-            } else if (b.bstate==WAITING) {
-                // can be destroyed
-                // watching for the rocket/soul to hit
-                
             } else if (b.bstate==GOING) {
                 // can be destroyed while onscreen
                 // moving back off screen
                 // once we get back to home
                 // need to change state
                 // need to reduce the number firing
+                continue;
+            } else if (b.bstate==INPLACE_IDLE) {
+                // need to wait until the firing is done
+                continue;
             }
 
             this.bads[i].update(dt);
-        }
-
-        // no bads are on screen
-        // decide to do something
-        if (this.throwing==0) {
-            if (Math.random()<0.5) {
-                // start someone throwing
-                this.throwing = 1;
-
-                // change state
-                this.bads[0].bstate = COMING;
-                
-                // give them a target
-                // might need an X here too
-                this.bads[0].targety = 
-                    randInt(0,this.canvas.height);
-                this.bads[0].targetx =
-                    randInt(0,this.canvas.width);
-                // where are they in the lerp?
-                this.bads[0].lpercent = 0.0;
-            }
         }
 
         this.rockets[0].update();
@@ -175,7 +160,12 @@ class BadFac {
 
             // need to signal the bad 
             // to move offscreen again
-            this.bads[0].bstate = GOING;
+            if (this.bads[0].bstate==FIRING) {
+                // tricky bit here is that the state
+                // needs to be firing ...
+                // not sure this will hold
+                //this.bads[0].bstate = GOING;
+            }
         }
     }
 
