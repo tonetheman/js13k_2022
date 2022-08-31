@@ -13,12 +13,12 @@ import {
 } from "./kontra/kontra.mjs";
 
 // bad guy states
-const WAITING = 1; // waiting off screen
-const COMING = 2; // moving to onscreen
-const INPLACE_IDLE = 3; // hanging out onscreen
-const FIRING = 4; // firing on screen
+const WAITING = "wait"; // waiting off screen
+const COMING = "coming"; // moving to onscreen
+const INPLACE_IDLE = "inplaceidle"; // hanging out onscreen
+const FIRING = "firing"; // firing on screen
 // really goes back to inplace_idle
-const GOING = 5; // leaving the screen
+const GOING = "going"; // leaving the screen
 
 class BadFac {
     constructor(canvas,context) {
@@ -29,43 +29,63 @@ class BadFac {
 
         // this is the bad guy list
         this.bads = [];
-        this.bads.push(Sprite({
-            x : this.canvas.width-32, 
-            y : 32, // offscreen
-            color : '#0f0',
-            anchor : { x : 0.5, y : 0.5 },
-            width : 32, height : 32,
-            bstate : WAITING,
-            targetx : 0,
-            targety : 0,
-            lpercent : 0
-        }));
 
         // DEFAULT PLACE FOR A ROCKET
         // is off to the right of the canvas
         // we need this to know when it goes
         // off screen
         this.rockets = [];
-        this.rockets.push(Sprite({
-            x : canvas.width+100, // IMPORTANT SEE NOTE
-            y : 0,
-            dx : 0,
-            height : 16,
-            width : 16,
-            color : 'yellow',
-            bstate : WAITING
-        }));
+
+        for (let i=0;i<1;i++) {
+            this.bads.push(Sprite({
+                x : this.canvas.width-32, 
+                y : 32, // offscreen
+                color : '#0f0',
+                anchor : { x : 0.5, y : 0.5 },
+                width : 32, height : 32,
+                bstate : WAITING,
+                targetx : 0,
+                targety : 0,
+                lpercent : 0,
+                _id : i
+            }));
+            this.rockets.push(Sprite({
+                x : canvas.width+100, // IMPORTANT SEE NOTE
+                y : 0,
+                dx : 0,
+                height : 16,
+                width : 16,
+                color : 'yellow',
+                bstate : WAITING,
+                _id : i
+            }));
+        }
+
 
         on("FIRE1", (b) =>{
             this.handle_fire1(b);
         });
 
+        on("GOING", (b)=> {
+            this.handle_going(b);
+        })
+
+    }
+
+    handle_going(b) {
+        // the rocket left the screen
+        // the state of the bad was firing
+        b.bstate = GOING;
+        b.targetx = this.canvas.width+100,
+        b.targety = randInt(0,this.canvas.height)
     }
 
     handle_fire1(b) {
         this.rockets[0].x = b.x;
         this.rockets[0].y = b.y;
-        this.rockets[0].dx = -10;
+
+        // speed it moves towards the player
+        this.rockets[0].dx = -50;
     }
 
     // used to move bad to a spot on screen
@@ -94,78 +114,122 @@ class BadFac {
         }
     }
 
+    _handle_waiting_state(b,dt) {
+    // this controls if the bad comes out
+        // or not i think this will need to be lower
+        if (Math.random()<0.5) {
+            
+            this.throwing++; // bump up the throwing count
+            
+            // change state to coming on to the screen
+            console.log("changed state to COMING onto the screen");
+            b.bstate = COMING;
+            
+            // give them a target
+            // might need an X here too
+            b.targety = 
+                randInt(0,this.canvas.height);
+            b.targetx =
+                randInt(0,this.canvas.width);
+            // where are they in the lerp?
+            b.lpercent = 0.0;
+        }    
+    }
+
+    _handle_coming_state(b,dt) {
+        // this will take a step
+        // towards the targetx,y and
+        // once it arrives it will change
+        // state to FIRING
+        this.take_step(b,dt,FIRING);
+    }
+
+    _hande_firing_state(b,dt) {
+        // can be destroyed
+        // let a soul/rocket fly
+
+        emit("FIRE1", b);
+        b.bstate = INPLACE_IDLE;
+    }
+
+    _handle_going_state(b,dt) {
+        // can be destroyed while onscreen
+        // moving back off screen
+        // once we get back to home
+        // need to change state
+        // need to reduce the number firing
+        this.take_step(b,dt,WAITING);
+    }
+
+    _handle_inplace_idle(b,dt) {
+
+    }
+
+    handle_state_machine_bad(b,dt) {
+        if (b.bstate==WAITING) {
+            this._handle_waiting_state(b,dt);
+            return;
+        }
+        if (b.bstate==COMING) {
+            this._handle_coming_state(b,dt);
+            return;
+        }
+        if (b.bstate==FIRING) {
+            this._hande_firing_state(b,dt);
+            return;
+        }
+        if (b.bstate==GOING) {
+            this._handle_going_state(b,dt);
+            return;
+        }
+        if (b.bstate==INPLACE_IDLE) {
+            this._handle_inplace_idle(b,dt);
+            return;
+        }
+    }
+
     update(dt) {
 
         for(let i=0;i<this.bads.length;i++) {
             let b = this.bads[i];
-            console.log(b.bstate);
-
-            if (b.bstate==WAITING) {
-                if (Math.random()<0.5) {
-                    this.throwing++; // bump up the throwing count
-                    b.bstate = COMING;
-                    // give them a target
-                    // might need an X here too
-                    b.targety = 
-                        randInt(0,this.canvas.height);
-                    b.targetx =
-                        randInt(0,this.canvas.width);
-                    // where are they in the lerp?
-                    b.lpercent = 0.0;
-                }
-
-                // we are done with this one
-                continue;
-
-            } else if (b.bstate==COMING) {
     
-                // this will take a step
-                // towards the targetx,y and
-                // once it arrives it will change
-                // state to FIRING
-                this.take_step(b,dt,FIRING);
-                continue;
-
-            } else if (b.bstate==FIRING) {
-                // can be destroyed
-                // let a soul/rocket fly
-
-                emit("FIRE1", b);
-                b.bstate = INPLACE_IDLE;
-
-               continue;
-    
-            } else if (b.bstate==GOING) {
-                // can be destroyed while onscreen
-                // moving back off screen
-                // once we get back to home
-                // need to change state
-                // need to reduce the number firing
-                continue;
-            } else if (b.bstate==INPLACE_IDLE) {
-                // need to wait until the firing is done
-                continue;
-            }
+            this.handle_state_machine_bad(b,dt);
 
             this.bads[i].update(dt);
         }
 
-        this.rockets[0].update();
-        if (this.rockets[0].x<0) {
+        for (let i=0;i<this.rockets.length;i++) {
+            let r = this.rockets[i];
+            r.update(dt);
 
-            // make the rocket not move any more
-            this.rockets[0].x = -100;
-            this.rockets[0].y = -100;
-            this.rockets[0].dx = 0;
+            console.log(r.x);
 
-            // need to signal the bad 
-            // to move offscreen again
-            if (this.bads[0].bstate==FIRING) {
-                // tricky bit here is that the state
-                // needs to be firing ...
-                // not sure this will hold
-                //this.bads[0].bstate = GOING;
+            // if this rocket goes off screen
+            if (r.x<0) {
+                console.log("rocket went off screen");
+                console.log(this.bads[r._id].bstate);
+
+                // make the rocket not move any more
+                r.x = this.canvas.width+100;
+                r.y = 0;
+                r.dx = 0;
+    
+                // no longer throwing
+                this.throwing--;
+    
+                // need to signal the bad 
+                // to move offscreen again
+                if (this.bads[r._id].bstate==FIRING) {
+                    console.log("bad was firing need to change state")
+                    // tricky bit here is that the state
+                    // needs to be firing ...
+                    // so the rocket went off screen and we
+                    // were firing so now we need to leave
+                    console.log("emit going!");
+                    emit("GOING",this.bads[r._id])                
+                }
             }
+    
         }
     }
 
