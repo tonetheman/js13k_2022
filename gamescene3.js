@@ -13,12 +13,11 @@ import {
 } from "./kontra/kontra.mjs";
 
 // bad guy states
-const WAITING = "wait"; // waiting off screen
-const COMING = "coming"; // moving to onscreen
-const INPLACE_IDLE = "inplaceidle"; // hanging out onscreen
+const WAITING = "offscreen_waiting"; // waiting off screen
+const COMING = "coming_onscreen"; // moving to onscreen
 const FIRING = "firing"; // firing on screen
-// really goes back to inplace_idle
-const GOING = "going"; // leaving the screen
+const INPLACE_IDLE = "inplaceidle"; // hanging out onscreen
+const GOING = "going_offscreen"; // leaving the screen
 
 class BadFac {
     constructor(canvas,context) {
@@ -43,7 +42,7 @@ class BadFac {
                 color : '#0f0',
                 anchor : { x : 0.5, y : 0.5 },
                 width : 32, height : 32,
-                bstate : WAITING,
+                bstate : WAITING, // default state
                 targetx : 0,
                 targety : 0,
                 lpercent : 0,
@@ -62,10 +61,14 @@ class BadFac {
         }
 
 
+        // the bad has gotten onscreen and in position
+        // and needs to fire the missile
         on("FIRE1", (b) =>{
             this.handle_fire1(b);
         });
 
+        // the rocket has left the screen or been destroyed
+        // need to move back offscreen
         on("GOING", (b)=> {
             this.handle_going(b);
         })
