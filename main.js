@@ -7,16 +7,18 @@ import {
     load,
     emit,
     on,
-    imageAssets
 } from "./kontra/kontra.mjs";
+/*
 import {
     GameScene
 } from "./gamescene";
-
+*/
 import {
     SceneManager
 } from "./scenemanager";
+/*
 import { GameScene2 } from "./gamescene2.js";
+*/
 import { GameScene3 } from "./gamescene3.js";
 
 // called when window is loaded

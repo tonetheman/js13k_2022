@@ -1,11 +1,8 @@
 
-import { createImportSpecifier, isThisTypeNode } from "typescript";
 import {
     Sprite,
     imageAssets,
     keyPressed,
-    initPointer,
-    getPointer,
     randInt,
     lerp,
     emit,
