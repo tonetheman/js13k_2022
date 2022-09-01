@@ -88,7 +88,7 @@ class BadFac {
         this.rockets[0].y = b.y;
 
         // speed it moves towards the player
-        this.rockets[0].dx = -50;
+        this.rockets[0].dx = -250;
     }
 
     // used to move bad to a spot on screen
@@ -101,8 +101,15 @@ class BadFac {
         b.lpercent += 0.02;
         
         if (b.lpercent>1.0) {
-            console.log("setting b.bstate to next_state",next_state)
-            b.bstate = next_state;
+            if (b.bstate==COMING) {
+                // we have arrived
+                // then we need to switch to firing
+                b.bstate = FIRING;
+            } else if (b.bstate==GOING) {
+                b.bstate = WAITING; // not doing anything
+            } else {
+                console.log("ERROR! state was not COMING");
+            }
             return;
         }
         if (b.targety>b.y) {
@@ -125,15 +132,14 @@ class BadFac {
             this.throwing++; // bump up the throwing count
             
             // change state to coming on to the screen
-            console.log("changed state to COMING onto the screen");
             b.bstate = COMING;
             
             // give them a target
             // might need an X here too
             b.targety = 
                 randInt(0,this.canvas.height);
-            b.targetx =
-                randInt(0,this.canvas.width);
+            b.targetx = this.canvas.width-64;
+                
             // where are they in the lerp?
             b.lpercent = 0.0;
         }    
@@ -205,13 +211,8 @@ class BadFac {
             let r = this.rockets[i];
             r.update(dt);
 
-            console.log(r.x);
-
             // if this rocket goes off screen
             if (r.x<0) {
-                console.log("rocket went off screen");
-                console.log(this.bads[r._id].bstate);
-
                 // make the rocket not move any more
                 r.x = this.canvas.width+100;
                 r.y = 0;
@@ -222,13 +223,19 @@ class BadFac {
     
                 // need to signal the bad 
                 // to move offscreen again
-                if (this.bads[r._id].bstate==FIRING) {
-                    console.log("bad was firing need to change state")
+                if (this.bads[r._id].bstate==INPLACE_IDLE) {
                     // tricky bit here is that the state
                     // needs to be firing ...
                     // so the rocket went off screen and we
                     // were firing so now we need to leave
-                    console.log("emit going!");
+                    let b = this.bads[r._id];
+                    b.bstate = GOING;
+                    b.targety = 
+                        randInt(0,this.canvas.height);
+                    b.targetx = this.canvas.width+100;
+                    // where are they in the lerp?
+                    b.lpercent = 0.0;
+    
                     emit("GOING",this.bads[r._id])                
                 }
             }
@@ -293,9 +300,7 @@ export class GameScene3 {
             dx : -100
         });
 
-        this.bf = new BadFac(canvas,context);
-        
-        console.log("gamescene3 loaded");
+        this.bf = new BadFac(canvas,context);        
     }
 
     update(dt) {
