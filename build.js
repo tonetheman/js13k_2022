@@ -14,8 +14,10 @@ esbuild
         gameObject: {
           anchor: true,
           opacity: false,
-          ttl: true,
-          velocity: true
+          ttl: false,
+          velocity: true,
+          rotation : false,
+          scale : false
         },
         text: {
           newline: true,
@@ -25,6 +27,15 @@ esbuild
         vector: {
           clamp: true,
           length: true
+        },
+        sprite : {
+          animation : false
+        },
+        tileEngine : {
+          camera : false,
+          dynamic : false,
+          query : false,
+          tiled : false
         }
       })
     ]
