@@ -36,7 +36,8 @@ class BadFac {
             this.bads.push(Sprite({
                 x : this.canvas.width-32, 
                 y : 32, // offscreen
-                color : '#0f0',
+                //color : '#0f0',
+                image : imageAssets["angel.png"],
                 anchor : { x : 0.5, y : 0.5 },
                 width : 32, height : 32,
                 bstate : WAITING, // default state

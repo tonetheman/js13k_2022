@@ -66,7 +66,8 @@ on("main", gamemain);
 
 function main() {
     load("death_v1.png",
-        "long_bottom.png").then(()=> {
+        "long_bottom.png",
+        "angel.png").then(()=> {
         emit("main");
     });
 }
