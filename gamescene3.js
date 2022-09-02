@@ -7,7 +7,8 @@ import {
     lerp,
     emit,
     on,
-    collides
+    collides,
+    angleToTarget
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -19,6 +20,7 @@ const GOING = "going_offscreen"; // leaving the screen
 
 class BadFac {
     static ROCKET_SPEED = -450;
+    static BAD_COUNT = 3;
 
     constructor(parent,canvas,context) {
         this.canvas = canvas;
@@ -36,7 +38,7 @@ class BadFac {
         // off screen
         this.rockets = [];
 
-        for (let i=0;i<1;i++) {
+        for (let i=0;i<BadFac.BAD_COUNT;i++) {
             this.bads.push(Sprite({
                 x : this.canvas.width-32, 
                 y : 32, // offscreen
@@ -95,11 +97,18 @@ class BadFac {
     }
 
     handle_fire1(b) {
-        this.rockets[0].x = b.x;
-        this.rockets[0].y = b.y;
 
+        // all rockets orig at bad
+        this.rockets[b._id].x = b.x;
+        this.rockets[b._id].y = b.y;
+
+        // streight shot here directly across
         // speed it moves towards the player
-        this.rockets[0].dx = BadFac.ROCKET_SPEED;
+        this.rockets[b._id].dx = BadFac.ROCKET_SPEED;
+
+        // what can i do here?
+        // can i translate this to dx and dy?
+        let ang = angleToTarget(b,this.parent.player)
     }
 
     // used to move bad to a spot on screen
@@ -138,7 +147,7 @@ class BadFac {
     _handle_waiting_state(b,dt) {
     // this controls if the bad comes out
         // or not i think this will need to be lower
-        if (Math.random()<0.5) {
+        if (Math.random()<0.3) {
             
             this.throwing++; // bump up the throwing count
             
@@ -210,7 +219,7 @@ class BadFac {
 
     update(dt) {
 
-        for(let i=0;i<this.bads.length;i++) {
+        for(let i=0;i<BadFac.BAD_COUNT;i++) {
             let b = this.bads[i];
     
             this.handle_state_machine_bad(b,dt);
@@ -218,7 +227,7 @@ class BadFac {
             this.bads[i].update(dt);
         }
 
-        for (let i=0;i<this.rockets.length;i++) {
+        for (let i=0;i<BadFac.BAD_COUNT;i++) {
             let r = this.rockets[i];
             r.update(dt);
 
@@ -259,12 +268,10 @@ class BadFac {
     }
 
     render() {
-        for(let i=0;i<this.bads.length;i++) {
+        for(let i=0;i<BadFac.BAD_COUNT;i++) {
             this.bads[i].render();
+            this.rockets[i].render();
         }
-    
-        this.rockets[0].render();
-    
     }
 }
 
