@@ -6,7 +6,8 @@ import {
     randInt,
     lerp,
     emit,
-    on
+    on,
+    collides
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -17,9 +18,12 @@ const INPLACE_IDLE = "inplaceidle"; // hanging out onscreen
 const GOING = "going_offscreen"; // leaving the screen
 
 class BadFac {
-    constructor(canvas,context) {
+    static ROCKET_SPEED = -450;
+
+    constructor(parent,canvas,context) {
         this.canvas = canvas;
         this.context = context;
+        this.parent = parent;
 
         this.throwing = 0;
 
@@ -69,8 +73,17 @@ class BadFac {
         // need to move back offscreen
         on("GOING", (b)=> {
             this.handle_going(b);
-        })
+        });
 
+        // the rocket has hit the player!
+        on("ROCKET_HIT", (r) => {
+            this.handle_rocket_hit(r);
+        });
+
+    }
+
+    handle_rocket_hit(r) {
+        console.log(r);   
     }
 
     handle_going(b) {
@@ -86,7 +99,7 @@ class BadFac {
         this.rockets[0].y = b.y;
 
         // speed it moves towards the player
-        this.rockets[0].dx = -250;
+        this.rockets[0].dx = BadFac.ROCKET_SPEED;
     }
 
     // used to move bad to a spot on screen
@@ -209,6 +222,10 @@ class BadFac {
             let r = this.rockets[i];
             r.update(dt);
 
+            if (collides(r,this.parent.player)) {
+                emit("ROCKET_HIT",r);
+            };
+
             // if this rocket goes off screen
             if (r.x<0) {
                 // make the rocket not move any more
@@ -298,7 +315,7 @@ export class GameScene3 {
             dx : -100
         });
 
-        this.bf = new BadFac(canvas,context);        
+        this.bf = new BadFac(this,canvas,context);        
     }
 
     update(dt) {
