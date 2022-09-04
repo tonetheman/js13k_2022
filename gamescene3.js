@@ -8,7 +8,8 @@ import {
     emit,
     on,
     collides,
-    angleToTarget
+    angleToTarget,
+    Text
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -28,6 +29,20 @@ class BadFac {
         this.parent = parent;
 
         this.throwing = 0;
+
+        // player score POD
+        this.score = 0;
+
+        // player score object
+        this.kscore = Text({
+            text : "0",
+            font: '32px Arial',
+            color: 'white',
+            x : 16,
+            y : 16       ,
+            anchor :  {x : 0.5, y: 0.5},
+            textAlign : "center"
+        });
 
         // this is the bad guy list
         this.bads = [];
@@ -85,7 +100,9 @@ class BadFac {
     }
 
     handle_rocket_hit(r) {
-        console.log(r);   
+        console.log(r);
+        this.score++;
+        this.kscore.text = this.score;   
     }
 
     handle_going(b) {
@@ -265,6 +282,8 @@ class BadFac {
             }
     
         }
+
+        this.kscore.update();
     }
 
     render() {
@@ -272,6 +291,8 @@ class BadFac {
             this.bads[i].render();
             this.rockets[i].render();
         }
+        this.kscore.render();
+
     }
 }
 
