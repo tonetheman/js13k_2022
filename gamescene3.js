@@ -100,7 +100,10 @@ class BadFac {
     }
 
     handle_rocket_hit(r) {
-        console.log(r);
+        // Need to figure out how to handle multi hits
+        // a lot of these happen quickly
+        // I need a way once one hit happens
+        // to ignore others hits for a few seconds
         this.score++;
         this.kscore.text = this.score;   
     }
