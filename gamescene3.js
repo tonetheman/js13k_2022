@@ -9,7 +9,8 @@ import {
     on,
     collides,
     angleToTarget,
-    Text
+    Text,
+    Pool
 } from "./kontra/kontra.mjs";
 
 // bad guy states
@@ -313,6 +314,10 @@ export class GameScene3 {
             anchor: {x: 0.5, y: 0.5},
             image : imageAssets["death_v1.png"]
         });
+        this.player_trail = Pool({
+            create : Sprite,
+            maxSize : 32 // default is 1024 we do not need much
+        });
 
         // will use this as something 
         // that will be a collider
@@ -371,6 +376,16 @@ export class GameScene3 {
         if (keyPressed("space")) {
             //player.velocity = player.velocity.add(Vector(0,-10*dt))
             this.player.velocity.y += -500*dt;
+
+            this.player_trail.get({
+                x : this.player.x,
+                y : this.player.y+16,
+                dx : randInt(-20,20),
+                dy : randInt(20,40),
+                color : '#FDDA0D',
+                width : 4, height : 4,
+                ttl : 10+randInt(20)
+            });
         } else {
             // gravity
             //player.velocity = player.velocity.add(Vector(0,9.8*dt))
@@ -390,7 +405,8 @@ export class GameScene3 {
        }
 
         this.player.update(dt);
-        
+        this.player_trail.update(dt);
+
         this.bf.update(dt);
 
     }
@@ -400,6 +416,7 @@ export class GameScene3 {
         this.bg2.render();
         this.goal.render();
         this.player.render();
+        this.player_trail.render();
         this.bf.render();
     }
 }
