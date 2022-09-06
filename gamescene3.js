@@ -42,7 +42,7 @@ export class GameScene3 {
             text : "0",
             font: '32px Arial',
             color: 'white',
-            x : 16,
+            x : 32,
             y : 16       ,
             anchor :  {x : 0.5, y: 0.5},
             textAlign : "center"
