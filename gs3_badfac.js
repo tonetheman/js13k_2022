@@ -90,6 +90,15 @@ export class BadFac {
             this.handle_rocket_hit(r);
         });
 
+        on("ROCKET_SCORE", (r) => {
+            this.handle_rocket_score(r);
+        })
+
+    }
+
+    handle_rocket_score(r) {
+        this.parent.score -= 1;
+        this.parent.kscore.text = this.parent.score; 
     }
 
     handle_rocket_hit(r) {
@@ -272,7 +281,13 @@ export class BadFac {
             // check for collision
             if (collides(r,this.parent.player)) {
                 emit("ROCKET_HIT",r);
+                return;
             };
+
+            if (collides(r,this.parent.goal)) {
+                emit("ROCKET_SCORE",r);
+                return;
+            }
 
             // it is still alive
             if (r.ttl==Infinity) {
