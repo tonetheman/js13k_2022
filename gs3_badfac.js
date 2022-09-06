@@ -50,21 +50,6 @@ export class BadFac {
 
         this.throwing = 0;
 
-        // player score POD
-        this.score = 0;
-
-        // player score object
-        // TODO: this is in the wrong place
-        this.kscore = Text({
-            text : "0",
-            font: '32px Arial',
-            color: 'white',
-            x : 16,
-            y : 16       ,
-            anchor :  {x : 0.5, y: 0.5},
-            textAlign : "center"
-        });
-
         // this is the bad guy list
         this.bads = [];
 
@@ -86,9 +71,7 @@ export class BadFac {
                 lpercent : 0,
                 _id : i
             }));
-
         }
-
 
         // the bad has gotten onscreen and in position
         // and needs to fire the missile
@@ -118,8 +101,8 @@ export class BadFac {
         
         r.dx *= -1;
         
-        this.score++;
-        this.kscore.text = this.score;   
+        this.parent.score++;
+        this.parent.kscore.text = this.parent.score;   
     }
 
     handle_going(b) {
@@ -204,8 +187,9 @@ export class BadFac {
             
             // give them a target
             // might need an X here too
+            // -48 to try to keep it on screen
             b.targety = 
-                randInt(0,this.canvas.height);
+                randInt(0,this.canvas.height-48);
             b.targetx = this.canvas.width-64;
                 
             // where are they in the lerp?
@@ -323,7 +307,6 @@ export class BadFac {
             }
         }
 
-        this.kscore.update();
     }
 
     render() {
@@ -331,8 +314,5 @@ export class BadFac {
             this.bads[i].render();
         }
         this.rockets.render();
-
-        this.kscore.render();
-
     }
 }
