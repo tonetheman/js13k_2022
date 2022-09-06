@@ -34,6 +34,20 @@ export class GameScene3 {
             maxSize : 64 // default is 1024 we do not need much
         });
 
+        // int to hold da score
+        this.score = 0;
+
+        // player score object
+        this.kscore = Text({
+            text : "0",
+            font: '32px Arial',
+            color: 'white',
+            x : 16,
+            y : 16       ,
+            anchor :  {x : 0.5, y: 0.5},
+            textAlign : "center"
+        });
+
         // will use this as something 
         // that will be a collider
         this.goal = Sprite({
@@ -124,6 +138,8 @@ export class GameScene3 {
 
         this.bf.update(dt);
 
+        this.kscore.update();
+
     }
 
     render() {
@@ -133,5 +149,6 @@ export class GameScene3 {
         this.player.render();
         this.player_trail.render();
         this.bf.render();
+        this.kscore.render();
     }
 }
