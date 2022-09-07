@@ -2,6 +2,14 @@
 
 # js13k 2022
 
+
+## to do dev
+run 
+`npx vite dev --host`
+
+to package
+`node build.js`
+
 ## DEATH ON A JET PACK
 in a garden...
 
@@ -14,6 +22,17 @@ in a garden...
 - MUST: need an instruction/setup screen
     - shows until user hits space bar
     - STARTED
+
+- MUST: need scrolling backgrounds
+    - MAKE THESE IN CODE
+    - not enough room
+
+- MUST: bring bad guys further onto screen
+
+- MUST: slow down rockets a bit?
+
+- MUST: need graphics for rockets?
+    - if not i need particles at least i think?
     
 - MUST: need an end of game screen
     - this could just be a dialog?
@@ -23,6 +42,9 @@ in a garden...
     - goes back to instruction setup screen
 
 - MUST: garden implementation
+    - MAYBE THE GARDEN IS GOOD
+    - and the evil things are taking away from it
+    - instead of adding to it? i dunno
     - V1
         - garden is revealed at the bottom of the screen
         - like a progress bar that shrinks and grows
@@ -49,8 +71,6 @@ in a garden...
 
 - NICETOHAVE: need a 3rd bad guy that shoots in a curved way?
     - this bad will be colored differently
-
-- MUST: need scrolling backgrounds
 
 - BUG: need bads to come out slower
 
