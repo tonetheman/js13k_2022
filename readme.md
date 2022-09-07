@@ -4,6 +4,25 @@
 
 ## DEATH ON A JET PACK
 
+### LAST PUSH
+- need have a 2nd bad guy that shoots differently
+    - aka uses the angle to determine the shot
+    - this bad will be colored slightly differently
+
+- need a 3rd bad guy that shoots in a curved way?
+    - this bad will be colored differently
+
+- need scrolling backgrounds
+
+- need bads to come out slower
+
+- what is final game play here?
+
+- need bad guys to explode if hit
+    - add score here
+
+
+
 ### gamescene3 is the soccer idea?
 
 - need to work on shooting of souls toward target
