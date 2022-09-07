@@ -94,6 +94,14 @@ export class BadFac {
             this.handle_rocket_score(r);
         })
 
+        on("ROCKET_BAD_HIT", (b,r) => {
+            this.handle_rocket_bad_hit(b,r);
+        });
+    }
+
+    // a bad guy got hit do something
+    handle_rocket_bad_hit(b,r) {
+
     }
 
     handle_rocket_score(r) {
@@ -265,7 +273,14 @@ export class BadFac {
     
             this.handle_state_machine_bad(b,dt);
 
-            this.bads[i].update(dt);
+            b.update(dt);
+
+            for (let i=0;i<this.rockets.objects.length;i++) {
+                let r = this.rockets.objects[i];
+                if (collides(b,r)) {
+                    emit("ROCKET_BAD_HIT",b,r);
+                }
+            }
         }
 
         // update the pool of rockets
@@ -279,11 +294,14 @@ export class BadFac {
             let r = this.rockets.objects[i];
 
             // check for collision
+            // with the player
             if (collides(r,this.parent.player)) {
                 emit("ROCKET_HIT",r);
                 return;
             };
 
+            // check for a collision with
+            // the goal
             if (collides(r,this.parent.goal)) {
                 emit("ROCKET_SCORE",r);
                 return;

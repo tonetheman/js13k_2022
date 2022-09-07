@@ -20,7 +20,11 @@
 
 - need bad guys to explode if hit
     - add score here
+    - TODO: this might change a lot
+    - it messes with the state machine I wrote
 
+- TODO: a bug if a player comes down over a rocket
+    - the rocket can stick and stop moving
 
 
 ### gamescene3 is the soccer idea?
