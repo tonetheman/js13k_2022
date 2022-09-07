@@ -5,6 +5,22 @@
 ## DEATH ON A JET PACK
 
 ### LAST PUSH
+
+#### death GROWS A GARDEN on a jetpack....
+
+- as the rockets come in
+    - they begin to reveal a garden
+    - if the garden is finished the game is over
+    - blocking the rockets helps remove some of the garden
+    - destroying a bad guy helps remove some of the gardne
+    - it is rogue like in that you will lose
+    - the garden will grow
+    - you just have to stop it as long as you can
+
+- need a garden that grows over time
+    - as score increases more of the garden is shown
+    - not sure how to implement this exactly
+    
 - need have a 2nd bad guy that shoots differently
     - aka uses the angle to determine the shot
     - this bad will be colored slightly differently
@@ -15,8 +31,6 @@
 - need scrolling backgrounds
 
 - need bads to come out slower
-
-- what is final game play here?
 
 - need bad guys to explode if hit
     - add score here
