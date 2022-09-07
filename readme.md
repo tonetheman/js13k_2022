@@ -20,21 +20,9 @@ in a garden...
 
 #### death GROWS A GARDEN on a jetpack....
 
-- DONE: need a title screen
-    - shows for a few seconds and moves on
-    - no controls
-
 - MUST: need an instruction/setup screen
     - shows until user hits space bar
     - STARTED
-
-- DONE: MUST: need scrolling backgrounds
-    - MAKE THESE IN CODE
-    - not enough room
-
-- DONE: MUST: bring bad guys further onto screen
-
-- DONE: MUST: slow down rockets a bit?
 
 - MUST: need graphics for rockets?
     - if not i need particles at least i think?
@@ -77,17 +65,6 @@ in a garden...
 - NICETOHAVE: need a 3rd bad guy that shoots in a curved way?
     - this bad will be colored differently
 
-- DONE: BUG: need bads to come out slower
-
-- DONE: MUST: need bad guys to explode if hit
-
-- DONE: MUST: need sound still even just tiny bits
-    - need a theme playing during other screens?
-    - need effects for hits that go into the goal
-    - need sound for rocket being shot
-    - need sound for rocket being blocked
-    - need sound for bad being hit
-
 - BUG: fix the floor draw bug
 
 - BUG/FEATURE: a bug if a player comes down over a rocket
@@ -95,3 +72,21 @@ in a garden...
 
 - BUG:
     - bad not coming on to screen all the way?
+
+
+- DONE: BUG: need bads to come out slower
+- DONE: MUST: need bad guys to explode if hit
+- DONE: MUST: need sound still even just tiny bits
+    - need a theme playing during other screens?
+    - need effects for hits that go into the goal
+    - need sound for rocket being shot
+    - need sound for rocket being blocked
+    - need sound for bad being hit
+- DONE: need a title screen
+    - shows for a few seconds and moves on
+    - no controls
+- DONE: MUST: need scrolling backgrounds
+    - MAKE THESE IN CODE
+    - not enough room
+- DONE: MUST: bring bad guys further onto screen
+- DONE: MUST: slow down rockets a bit?
