@@ -1,5 +1,4 @@
 
-import { isThisTypeNode } from "typescript";
 import {
     Sprite,
     imageAssets,
