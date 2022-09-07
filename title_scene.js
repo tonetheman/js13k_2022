@@ -1,16 +1,7 @@
 
 import {
-    Sprite,
-    imageAssets,
-    keyPressed,
-    randInt,
-    lerp,
     emit,
-    on,
-    collides,
-    angleToTarget,
     Text,
-    Pool
 } from "./kontra/kontra.mjs";
 
 
