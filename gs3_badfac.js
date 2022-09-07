@@ -25,8 +25,8 @@ const T_ALIVE = 0;
 const T_DEAD = -1;
 
 export class BadFac {
-    static ROCKET_SPEED_SLOW = -350;
-    static ROCKET_SPEED_FAST = -450;
+    static ROCKET_SPEED_SLOW = -250;
+    static ROCKET_SPEED_FAST = -350;
 
     static BAD_COUNT = 3;
 
@@ -60,8 +60,7 @@ export class BadFac {
         for (let i=0;i<BadFac.BAD_COUNT;i++) {
             this.bads.push(Sprite({
                 x : this.canvas.width-32, 
-                y : 32, // offscreen
-                //color : '#0f0',
+                y : 32, 
                 image : imageAssets["angel.png"],
                 anchor : { x : 0.5, y : 0.5 },
                 width : 32, height : 32,
@@ -185,7 +184,7 @@ export class BadFac {
     take_step(b,dt) {
         // can be destroyed in this state
         let step = dt*lerp(b.y,b.targety,b.lpercent);
-        b.lpercent += 0.02;
+        b.lpercent += 0.01;
         
         if (b.lpercent>1.0) {
             if (b.bstate==COMING) {
@@ -227,7 +226,7 @@ export class BadFac {
             // -48 to try to keep it on screen
             b.targety = 
                 randInt(0,this.canvas.height-48);
-            b.targetx = this.canvas.width-64;
+            b.targetx = this.canvas.width-96;
                 
             // where are they in the lerp?
             b.lpercent = 0.0;

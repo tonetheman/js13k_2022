@@ -28,13 +28,13 @@ in a garden...
     - shows until user hits space bar
     - STARTED
 
-- MUST: need scrolling backgrounds
+- DONE: MUST: need scrolling backgrounds
     - MAKE THESE IN CODE
     - not enough room
 
-- MUST: bring bad guys further onto screen
+- DONE: MUST: bring bad guys further onto screen
 
-- MUST: slow down rockets a bit?
+- DONE: MUST: slow down rockets a bit?
 
 - MUST: need graphics for rockets?
     - if not i need particles at least i think?
@@ -81,7 +81,7 @@ in a garden...
 
 - MUST: need bad guys to explode if hit
 
-- MUST: need sound still even just tiny bits
+- DONE: MUST: need sound still even just tiny bits
     - need a theme playing during other screens?
     - need effects for hits that go into the goal
     - need sound for rocket being shot
