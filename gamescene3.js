@@ -79,6 +79,12 @@ export class GameScene3 {
             height : 32,
             dx : -100
         });
+        this.bg3 = Sprite({
+            x : this.canvas.width,
+            y : 0,
+            image : imageAssets["testbg_128x600.png"],
+            dx : -10
+        });
 
         this.bf = new BadFac(this,canvas,context);        
     }
@@ -98,6 +104,7 @@ export class GameScene3 {
         // super slow
         this.bg1.update(dt);
         this.bg2.update(dt);
+        this.bg3.update(dt);
 
         this.goal.update(dt); // should not move
 
@@ -145,6 +152,8 @@ export class GameScene3 {
     render() {
         this.bg1.render();
         this.bg2.render();
+        this.bg3.render();
+
         this.goal.render();
         this.player.render();
         this.player_trail.render();

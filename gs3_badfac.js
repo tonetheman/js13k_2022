@@ -104,7 +104,7 @@ export class BadFac {
 
         // IT WILL BE SOMETHING LIKE THIS
         // 1. do explosion
-
+        zzfx(...[,,979,.02,.24,.48,3,1.18,-0.1,,50,,,.6,,.9,.01,.44,.18]); // Explosion 38 - Mutation 2
 
         // DONE 2. move offscreen
         // DONE 3. set state so it can be used again
@@ -119,6 +119,8 @@ export class BadFac {
     }
 
     handle_rocket_score(r) {
+        zzfx(...[1.45,,88,,.08,.15,,.72,,6.8,-503,.16,,,36,,.01,.99]); // Random 36
+
         this.parent.score -= 1;
         this.parent.kscore.text = this.parent.score; 
     }
@@ -129,7 +131,8 @@ export class BadFac {
         // I need a way once one hit happens
         // to ignore others hits for a few seconds
         
-        
+        zzfx(...[1.13,,242,,.01,.09,1,,,-0.5,,,,,162,.5,,.72,.09]); // Shoot 31
+
         r.dx *= -1;
         
         this.parent.score++;
