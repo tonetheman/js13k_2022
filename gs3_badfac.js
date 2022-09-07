@@ -102,6 +102,20 @@ export class BadFac {
     // a bad guy got hit do something
     handle_rocket_bad_hit(b,r) {
 
+        // IT WILL BE SOMETHING LIKE THIS
+        // 1. do explosion
+
+
+        // DONE 2. move offscreen
+        // DONE 3. set state so it can be used again
+        b.bstate = WAITING;
+        b.x = this.canvas.width+100;
+        b.y = randInt(0,this.canvas.height);
+
+
+        // 4. adjust the score
+        this.parent.score += 5;
+        this.parent.kscore.text = this.parent.score;
     }
 
     handle_rocket_score(r) {
@@ -135,7 +149,9 @@ export class BadFac {
         let r = this._create_rocket();
 
         // all rockets orig at bad
-        r.x = b.x;
+        // added some to the rocket
+        // so it will not collide with bad
+        r.x = b.x-32;
         r.y = b.y;
 
         // set ttl
@@ -163,7 +179,7 @@ export class BadFac {
     // not exactly correct
     // think i need to keep up something   
     // for this to be accurate
-    take_step(b,dt,next_state) {
+    take_step(b,dt) {
         // can be destroyed in this state
         let step = dt*lerp(b.y,b.targety,b.lpercent);
         b.lpercent += 0.02;
@@ -175,6 +191,7 @@ export class BadFac {
                 b.bstate = FIRING;
             } else if (b.bstate==GOING) {
                 b.bstate = WAITING; // not doing anything
+                // this completes this bad journey
             } else {
                 console.log("ERROR! state was not COMING");
             }
@@ -219,7 +236,7 @@ export class BadFac {
         // towards the targetx,y and
         // once it arrives it will change
         // state to FIRING
-        this.take_step(b,dt,FIRING);
+        this.take_step(b,dt);
     }
 
     _hande_firing_state(b,dt) {
@@ -236,7 +253,7 @@ export class BadFac {
         // once we get back to home
         // need to change state
         // need to reduce the number firing
-        this.take_step(b,dt,WAITING);
+        this.take_step(b,dt);
     }
 
     _handle_inplace_idle(b,dt) {

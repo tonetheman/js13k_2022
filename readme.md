@@ -3,13 +3,30 @@
 # js13k 2022
 
 ## DEATH ON A JET PACK
-
-### LAST PUSH
+in a garden...
 
 #### death GROWS A GARDEN on a jetpack....
 
+- need a title screen
+    - shows for a few seconds and moves on
+    - no controls
+
+- need an instruction/setup screen
+    - shows until user hits space bar
+
+- need an end of game screen
+    - once garden is visible
+    - game ends
+    - bad guys can continue to move in the bg?
+    - goes back to instruction setup screen
+
+- should I show the score
+    - showing the garden here seems like a much better thing
+
 - as the rockets come in
     - they begin to reveal a garden
+        - as the score goes negative
+        - this is what is driving it
     - if the garden is finished the game is over
     - blocking the rockets helps remove some of the garden
     - destroying a bad guy helps remove some of the gardne
@@ -20,6 +37,10 @@
 - need a garden that grows over time
     - as score increases more of the garden is shown
     - not sure how to implement this exactly
+    - IDEA: draw the entire garden all at once
+    - the score is really just effecting the opacity
+    - so as the score gets closer to -255 you are seeing
+    - more and more of the garden
     
 - need have a 2nd bad guy that shoots differently
     - aka uses the angle to determine the shot
@@ -33,32 +54,13 @@
 - need bads to come out slower
 
 - need bad guys to explode if hit
-    - add score here
-    - TODO: this might change a lot
-    - it messes with the state machine I wrote
 
+- need sound still even just tiny bits
+    - need a theme playing during other screens?
+    - need effects for hits that go into the goal
+    - need sound for rocket being shot
+    - need sound for rocket being blocked
+    - need sound for bad being hit
+    
 - TODO: a bug if a player comes down over a rocket
     - the rocket can stick and stop moving
-
-
-### gamescene3 is the soccer idea?
-
-- need to work on shooting of souls toward target
-    - here how to translate angle
-    - to a dx and dy component for a straight directed shot
-    
-- need to work on a background
-    - need 3 starry panels
-    - flip/rotate them randomly
-    - use as background
-    - should make it fairly random
-
-- need to work on a ground (like background)
-    - maybe some mountains?
-    - maybe something else?
-
-
-- need at least 3 types of bads (all diff color?)
-    - straight not fast shot
-    - angled faster shot
-    - slow shot with a curve
