@@ -15,6 +15,30 @@ import {
 
 import { BadFac } from "./gs3_badfac.js";
 
+// used to create the background panels
+function make_canvas() {
+    let f = document.createElement("canvas");
+    f.width = 800;
+    f.height = 600;
+    let ctx = f.getContext("2d");
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,800,600);
+
+    for (let i=0;i<1000;i++) {
+        let x = randInt(0,800);
+        let y = randInt(0,600);
+        let r = randInt(1,4);
+
+        ctx.beginPath();
+        ctx.arc(x,y,r,0,2*Math.PI,false);
+        ctx.fillStyle = "gray";
+        ctx.fill();
+        ctx.stroke();
+    }
+    
+    return f;
+}
+
 // this is a test of the soccer idea
 // need a collider sprite behind the
 // player
@@ -59,31 +83,17 @@ export class GameScene3 {
             color : '#f00'
         });
 
-        // bg floor parts
         this.bg1 = Sprite({
-            x : 0, y : this.canvas.height-16,
-            //color : "#6a8d73",
-            image : imageAssets["long_bottom.png"],
-            anchor : { x : 0.5, y : 0.5 },
-            width : this.canvas.width,
-            height : 32,
-            dx : -100
+            x : 0,
+            y : 0,
+            image : make_canvas(),
+            dx : -50
         });
         this.bg2 = Sprite({
-            x : this.canvas.width, 
-            y : this.canvas.height-16,
-            //color : "#f4fdd9",
-            image : imageAssets["long_bottom.png"],
-            anchor : { x : 0.5, y : 0.5 },
-            width : this.canvas.width,
-            height : 32,
-            dx : -100
-        });
-        this.bg3 = Sprite({
-            x : this.canvas.width,
+            x : 800,
             y : 0,
-            image : imageAssets["testbg_128x600.png"],
-            dx : -10
+            image : make_canvas(),
+            dx : -50
         });
 
         this.bf = new BadFac(this,canvas,context);        
@@ -92,19 +102,17 @@ export class GameScene3 {
     update(dt) {
                 
         // move background floor along
-        if (this.bg1.x<-this.canvas.width) {
-            this.bg1.x = this.canvas.width;
+        if (this.bg1.x<-800) {
+            this.bg1.x = 800;
         }
-
-        if (this.bg2.x<-this.canvas.width) {
-            this.bg2.x = this.canvas.width;
+        if (this.bg2.x<-800) {
+            this.bg2.x = 800;
         }
     
         // if you pass dt to these the bottom will move
         // super slow
         this.bg1.update(dt);
         this.bg2.update(dt);
-        this.bg3.update(dt);
 
         this.goal.update(dt); // should not move
 
@@ -152,7 +160,6 @@ export class GameScene3 {
     render() {
         this.bg1.render();
         this.bg2.render();
-        this.bg3.render();
 
         this.goal.render();
         this.player.render();
