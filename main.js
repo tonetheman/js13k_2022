@@ -20,6 +20,8 @@ import {
 import { GameScene2 } from "./gamescene2.js";
 */
 import { GameScene3 } from "./gamescene3.js";
+import { TitleScene } from  "./title_scene.js";
+import { MenuScene } from "./menu_scene.js";
 
 // called when window is loaded
 function gamemain() {
@@ -39,11 +41,24 @@ function gamemain() {
     sm.add("game2",gs2);
     //sm.set("game2");
     */
-   
+
+    let ts = new TitleScene(canvas,context);
+    sm.add("title",ts);
+
+    let ms = new MenuScene(canvas,context);
+    sm.add("menu",ms);
+    
     let gs3 = new GameScene3(canvas,context);
     sm.add("game3",gs3);
 
-    sm.set("game3");
+    //sm.set("game3");
+    sm.set("title");
+
+    // the title scene emits this
+    // we catch it and switch scenes
+    on("TITLE_FINISHED", () => {
+        sm.set("game3");
+    });
 
     // kontra game loop
     let loop = GameLoop({

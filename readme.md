@@ -7,13 +7,14 @@ in a garden...
 
 #### death GROWS A GARDEN on a jetpack....
 
-- need a title screen
+- DONE: need a title screen
     - shows for a few seconds and moves on
     - no controls
 
 - need an instruction/setup screen
     - shows until user hits space bar
-
+    - STARTED
+    
 - need an end of game screen
     - once garden is visible
     - game ends
