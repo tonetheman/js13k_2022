@@ -57,6 +57,10 @@ export class BadFac {
             create: Sprite
         });
 
+        this.explosion_pool = Pool({
+            create: Sprite
+        });
+
         for (let i=0;i<BadFac.BAD_COUNT;i++) {
             this.bads.push(Sprite({
                 x : this.canvas.width-32, 
@@ -101,6 +105,21 @@ export class BadFac {
     // a bad guy got hit do something
     handle_rocket_bad_hit(b,r) {
 
+        // TODO: this is not working?
+        // it should make particle appear
+        // at the bad that was hit
+        for(let i=0;i<16;i++) {
+            this.explosion_pool.get({
+                x : b.x+ randInt(-5,5),
+                y : b.y+randInt(0,16),
+                dx : randInt(-20,20),
+                dy : randInt(20,40),
+                color : '#Ffffee',
+                width : 4, height : 4,
+                ttl : 10+randInt(30)        
+            });
+        }
+
         // IT WILL BE SOMETHING LIKE THIS
         // 1. do explosion
         zzfx(...[,,979,.02,.24,.48,3,1.18,-0.1,,50,,,.6,,.9,.01,.44,.18]); // Explosion 38 - Mutation 2
@@ -115,6 +134,7 @@ export class BadFac {
         // 4. adjust the score
         this.parent.score += 5;
         this.parent.kscore.text = this.parent.score;
+
     }
 
     handle_rocket_score(r) {
@@ -305,6 +325,9 @@ export class BadFac {
         // update the pool of rockets
         this.rockets.update(dt);
 
+        // update the explosion pool
+        this.explosion_pool.update(dt);
+
         // now decide if it is time for the rocket
         // to die
         for (let i=0;i<this.rockets.objects.length;i++) {
@@ -366,5 +389,6 @@ export class BadFac {
             this.bads[i].render();
         }
         this.rockets.render();
+        this.explosion_pool.render();
     }
 }

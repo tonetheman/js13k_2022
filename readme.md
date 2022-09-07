@@ -77,9 +77,9 @@ in a garden...
 - NICETOHAVE: need a 3rd bad guy that shoots in a curved way?
     - this bad will be colored differently
 
-- BUG: need bads to come out slower
+- DONE: BUG: need bads to come out slower
 
-- MUST: need bad guys to explode if hit
+- DONE: MUST: need bad guys to explode if hit
 
 - DONE: MUST: need sound still even just tiny bits
     - need a theme playing during other screens?
