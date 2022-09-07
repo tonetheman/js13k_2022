@@ -10,6 +10,11 @@ run
 to package
 `node build.js`
 
+sound generator here:
+https://killedbyapixel.github.io/ZzFX/
+
+
+
 ## DEATH ON A JET PACK
 in a garden...
 
