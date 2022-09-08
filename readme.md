@@ -14,7 +14,6 @@ sound generator here:
 https://killedbyapixel.github.io/ZzFX/
 
 
-
 ## DEATH ON A JET PACK
 in a garden...
 
@@ -23,6 +22,9 @@ in a garden...
 - MUST: need an instruction/setup screen
     - shows until user hits space bar
     - STARTED
+
+- BUG/FEATURE: a bug if a player comes down over a rocket
+    - the rocket can stick and stop moving
 
 - MUST: need graphics for rockets?
     - if not i need particles at least i think?
@@ -62,18 +64,23 @@ in a garden...
     - aka uses the angle to determine the shot
     - this bad will be colored slightly differently
 
+- NICETOHAVE: switch from lerp to tween
+    - you can steal one of these
+    - https://github.com/chenglou/tween-functions/blob/master/index.js
+    - like the ease out elastic looks really good
+    - https://easings.net/
+
 - NICETOHAVE: need a 3rd bad guy that shoots in a curved way?
     - this bad will be colored differently
-
-- BUG: fix the floor draw bug
-
-- BUG/FEATURE: a bug if a player comes down over a rocket
-    - the rocket can stick and stop moving
 
 - BUG:
     - bad not coming on to screen all the way?
 
 
+
+
+- NA: BUG: fix the floor draw bug
+    - note: removed floors not an issue now
 - DONE: BUG: need bads to come out slower
 - DONE: MUST: need bad guys to explode if hit
 - DONE: MUST: need sound still even just tiny bits
