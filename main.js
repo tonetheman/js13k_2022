@@ -81,9 +81,7 @@ on("main", gamemain);
 
 function main() {
     load("death_v1.png",
-        "long_bottom.png",
-        "angel.png",
-        "testbg_128x600.png").then(()=> {
+        "angel.png").then(()=> {
         emit("main");
     });
 }

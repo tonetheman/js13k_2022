@@ -28,8 +28,6 @@ function make_canvas() {
     f.width = 400;
     f.height = 400;
     let ctx = f.getContext("2d");
-    ctx.fillStyle = "black";
-    ctx.fillRect(0,0,400,400);
 
     for (let i=0;i<1000;i++) {
         let x = randInt(0,400);
@@ -57,6 +55,14 @@ function main() {
         dx : -20
     });
     let bg2 = Sprite({
+        x :400,
+        y : 0,
+        width : 400,
+        height : 400,
+        color : "green",
+        dx : -20
+    });
+    let bg3 = Sprite({
         x : 400,
         y : 0,
         image : make_canvas(),
@@ -67,6 +73,7 @@ function main() {
         update: (dt) => {
             bg1.update(dt);
             bg2.update(dt);
+            bg3.update(dt);
 
             if (bg1.x<-400) {
                 bg1.x = 400;
@@ -74,10 +81,14 @@ function main() {
             if (bg2.x<-400) {
                 bg2.x = 400;
             }
+            if (bg3.x<-400) {
+                bg3.x = 400;
+            }
         },
         render: () => {
             bg1.render();
             bg2.render();
+            bg3.render();
         }
     });
     loop.start();

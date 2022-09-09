@@ -16,22 +16,32 @@ import {
 import { BadFac } from "./gs3_badfac.js";
 
 // used to create the background panels
-function make_canvas() {
+function make_canvas(ctype) {
     let f = document.createElement("canvas");
     f.width = 800;
     f.height = 600;
     let ctx = f.getContext("2d");
-    ctx.fillStyle = "black";
-    ctx.fillRect(0,0,800,600);
 
-    for (let i=0;i<1000;i++) {
+    let count = 1000;
+    if (ctype=="close") {
+        count = 100;
+    }
+    for (let i=0;i<count;i++) {
         let x = randInt(0,800);
         let y = randInt(0,600);
         let r = randInt(1,4);
 
         ctx.beginPath();
         ctx.arc(x,y,r,0,2*Math.PI,false);
-        ctx.fillStyle = "gray";
+        
+        if (ctype=="close") {
+            ctx.fillStyle="white";
+        } else if (ctype=="far") {
+            ctx.fillStyle = "gray";
+        } else {
+            ctx.fillStyle = "gray";
+        }
+        
         ctx.fill();
         ctx.stroke();
     }
@@ -86,14 +96,20 @@ export class GameScene3 {
         this.bg1 = Sprite({
             x : 0,
             y : 0,
-            image : make_canvas(),
+            image : make_canvas("far"),
             dx : -50
         });
         this.bg2 = Sprite({
             x : 800,
             y : 0,
-            image : make_canvas(),
+            image : make_canvas("far"),
             dx : -50
+        });
+        this.bg3 = Sprite({
+            x : 800,
+            y : 0,
+            image : make_canvas("close"),
+            dx : -60
         });
 
         this.bf = new BadFac(this,canvas,context);        
@@ -108,11 +124,15 @@ export class GameScene3 {
         if (this.bg2.x<-800) {
             this.bg2.x = 800;
         }
+        if (this.bg3.x<-800) {
+            this.bg3.x = 800;
+        }
     
         // if you pass dt to these the bottom will move
         // super slow
         this.bg1.update(dt);
         this.bg2.update(dt);
+        this.bg3.update(dt);
 
         this.goal.update(dt); // should not move
 
@@ -160,6 +180,7 @@ export class GameScene3 {
     render() {
         this.bg1.render();
         this.bg2.render();
+        this.bg3.render();
 
         this.goal.render();
         this.player.render();
