@@ -19,16 +19,6 @@ in a garden...
 
 #### death GROWS A GARDEN on a jetpack....
 
-- MUST: need an instruction/setup screen
-    - shows until user hits space bar
-    - STARTED
-
-- BUG/FEATURE: a bug if a player comes down over a rocket
-    - the rocket can stick and stop moving
-
-- MUST: need graphics for rockets?
-    - if not i need particles at least i think?
-    
 - MUST: need an end of game screen
     - this could just be a dialog?
     - once garden is visible
@@ -36,6 +26,15 @@ in a garden...
     - bad guys can continue to move in the bg?
     - goes back to instruction setup screen
 
+- BUG: bad guys need to be near or always hitting goal
+    - adjust randomness to only land them in that area
+    
+- BUG/FEATURE: a bug if a player comes down over a rocket
+    - the rocket can stick and stop moving
+
+- MUST: need graphics for rockets?
+    - if not i need particles at least i think?
+    
 - MUST: garden implementation
     - MAYBE THE GARDEN IS GOOD
     - and the evil things are taking away from it
