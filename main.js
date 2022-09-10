@@ -57,6 +57,9 @@ function gamemain() {
     // the title scene emits this
     // we catch it and switch scenes
     on("TITLE_FINISHED", () => {
+        sm.set("menu");
+    });
+    on("MENU_FINISHED",() => {
         sm.set("game3");
     });
 

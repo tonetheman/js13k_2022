@@ -132,7 +132,7 @@ export class BadFac {
 
 
         // 4. adjust the score
-        this.parent.score += 5;
+        this.parent.score += 2;
         this.parent.kscore.text = this.parent.score;
 
     }
@@ -140,7 +140,7 @@ export class BadFac {
     handle_rocket_score(r) {
         zzfx(...[1.45,,88,,.08,.15,,.72,,6.8,-503,.16,,,36,,.01,.99]); // Random 36
 
-        this.parent.score -= 1;
+        this.parent.score -= 5;
         this.parent.kscore.text = this.parent.score; 
     }
 

@@ -19,8 +19,9 @@ export class MenuScene {
     constructor(canvas,context) {
         this.canvas = canvas;
         this.context = context;
-        /*
-        this.title_text = "death grows a garden... on a jetpack";
+        
+        this.title_text = 
+        "stop the bad guys from throwing souls\ninto the portal...\nif your bar fills up...\nyou are done for...";
         this.txt = Text({
             text : this.title_text,
             x : 400,
@@ -31,22 +32,22 @@ export class MenuScene {
             textAlign : "center"
         });
         this.counter = 0;
-        */
+        
     }
 
     update() {
-        /*
+        
         this.txt.update();
         this.counter++;
 
         if (this.counter>120) {
             // SWITCH
-            emit("TITLE_FINISHED");
+            emit("MENU_FINISHED");
         }
-        */
+        
     }
 
     render() {
-        //this.txt.render();
+        this.txt.render();
     }
 }
