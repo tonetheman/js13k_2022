@@ -370,8 +370,9 @@ export class BadFac {
                         // were firing so now we need to leave
                         let b = this.bads[r._id];
                         b.bstate = GOING;
+                        let mid = 300;
                         b.targety = 
-                            randInt(0,this.canvas.height);
+                            randInt(mid-200,mid+200);
                         b.targetx = this.canvas.width+100;
                         // where are they in the lerp?
                         b.lpercent = 0.0;

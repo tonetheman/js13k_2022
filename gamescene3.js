@@ -112,6 +112,24 @@ export class GameScene3 {
             dx : -60
         });
 
+        this.score_bar = Sprite({
+            x : 48,
+            y : 550,
+            width : this.canvas.width,
+            height : 32,
+            color : 'green',
+            current_score : 0,
+            render() {
+
+                this.context.fillStyle = this.color;
+                
+                this.context.fillRect(0,0,
+                        this.current_score,
+                        this.height);
+                        
+            }
+        });
+
         this.bf = new BadFac(this,canvas,context);        
     }
 
@@ -133,6 +151,12 @@ export class GameScene3 {
         this.bg1.update(dt);
         this.bg2.update(dt);
         this.bg3.update(dt);
+
+        if (this.score<0) {
+            this.score_bar.current_score =
+                -1 * this.score;
+        }
+        this.score_bar.update(dt);
 
         this.goal.update(dt); // should not move
 
@@ -181,6 +205,8 @@ export class GameScene3 {
         this.bg1.render();
         this.bg2.render();
         this.bg3.render();
+
+        this.score_bar.render();
 
         this.goal.render();
         this.player.render();
