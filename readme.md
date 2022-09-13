@@ -25,10 +25,15 @@ First it is not finished.
 
 Second packaging into a working game is also not working. kontra + esbuild is screwing something up but I am not getting errors for it.
 
-To make the build
+## To make the final esbuild
 
 `node build.js`
 
 Then copy game.dist.js into the directory final.
 
 That should be it.... but no errors for me and it does not work.
+
+## to make the final.zip file
+
+use make
+
