@@ -8,17 +8,11 @@ import {
     emit,
     on,
 } from "./kontra/kontra.mjs";
-/*
-import {
-    GameScene
-} from "./gamescene";
-*/
+
 import {
     SceneManager
 } from "./scenemanager";
-/*
-import { GameScene2 } from "./gamescene2.js";
-*/
+
 import { GameScene3 } from "./gamescene3.js";
 import { TitleScene } from  "./title_scene.js";
 import { MenuScene } from "./menu_scene.js";

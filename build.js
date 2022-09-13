@@ -12,12 +12,13 @@ esbuild
     plugins: [
       kontra({
         gameObject: {
+          acceleration : true,
           anchor: true,
           opacity: false,
-          ttl: false,
+          ttl: true,
           velocity: true,
-          rotation : false,
-          scale : false
+          rotation : true,
+          scale : false,
         },
         text: {
           newline: true,

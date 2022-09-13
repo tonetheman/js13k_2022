@@ -19,80 +19,16 @@ in a garden...
 
 #### death GROWS A GARDEN on a jetpack....
 
-- MUST: need an end of game screen
-    - this could just be a dialog?
-    - once garden is visible
-    - game ends
-    - bad guys can continue to move in the bg?
-    - goes back to instruction setup screen
+Not finished :(
 
-- BUG: bad guys need to be near or always hitting goal
-    - adjust randomness to only land them in that area
-    
-- BUG/FEATURE: a bug if a player comes down over a rocket
-    - the rocket can stick and stop moving
+First it is not finished.
 
-- MUST: need graphics for rockets?
-    - if not i need particles at least i think?
-    
-- MUST: garden implementation
-    - MAYBE THE GARDEN IS GOOD
-    - and the evil things are taking away from it
-    - instead of adding to it? i dunno
-    - V1
-        - garden is revealed at the bottom of the screen
-        - like a progress bar that shrinks and grows
-        - there is a percentage shown so user knows what is up
-    - v2
-        - garden is always present and is revealed based
-        - on opacity?
-        - as the score gets closer to 255 it shows
-        - once it hits 255 game over
+Second packaging into a working game is also not working. kontra + esbuild is screwing something up but I am not getting errors for it.
 
-    - score
-        - rocket goes in goal (helps bad)
-        - rocket blocked ?
-        - rocket hits bad (helps good)
+To make the build
 
-- Q: should I show the score
-    - see garden implementation for ideas here
-    - showing the garden here seems like a much better thing
-    - maybe a percentage towards the fail?
+`node build.js`
 
-- need have a 2nd bad guy that shoots differently
-    - aka uses the angle to determine the shot
-    - this bad will be colored slightly differently
+Then copy game.dist.js into the directory final.
 
-- NICETOHAVE: switch from lerp to tween
-    - you can steal one of these
-    - https://github.com/chenglou/tween-functions/blob/master/index.js
-    - like the ease out elastic looks really good
-    - https://easings.net/
-
-- NICETOHAVE: need a 3rd bad guy that shoots in a curved way?
-    - this bad will be colored differently
-
-- BUG:
-    - bad not coming on to screen all the way?
-
-
-
-
-- NA: BUG: fix the floor draw bug
-    - note: removed floors not an issue now
-- DONE: BUG: need bads to come out slower
-- DONE: MUST: need bad guys to explode if hit
-- DONE: MUST: need sound still even just tiny bits
-    - need a theme playing during other screens?
-    - need effects for hits that go into the goal
-    - need sound for rocket being shot
-    - need sound for rocket being blocked
-    - need sound for bad being hit
-- DONE: need a title screen
-    - shows for a few seconds and moves on
-    - no controls
-- DONE: MUST: need scrolling backgrounds
-    - MAKE THESE IN CODE
-    - not enough room
-- DONE: MUST: bring bad guys further onto screen
-- DONE: MUST: slow down rockets a bit?
+That should be it.... but no errors for me and it does not work.
